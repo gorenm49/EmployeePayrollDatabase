@@ -129,3 +129,109 @@ ALTER TABLE employee_payroll add basic_pay decimal, deduction decimal, taxable_p
 
 SELECT * from employee_payroll where name = 'Hitesh'
 
+-------------------------UC-11 ER Represenntation----------------------------------------------------------------------------------------------
+
+CREATE TABLE department
+(
+	dept_id int PRIMARY KEY IDENTITY(1,1),
+	dept_name varchar(30),
+	emp_id int FOREIGN KEY REFERENCES employee_payroll(id)
+);
+
+
+INSERT into department values ('sales',1)
+INSERT into department values ('HR',3)
+INSERT into department values ('Marketing',2)
+INSERT into department values ('Other',7)
+
+
+ALTER TABLE employee_payroll DROP column department
+
+ALTER TABLE employee_payroll DROP column dept_name 
+
+ALTER TABLE employee_payroll ADD dept_id int FOREIGN KEY REFERENCES department(dept_id)
+
+update employee_payroll set dept_id = 1 where id = 1
+
+update employee_payroll set dept_id = 3 where id = 2
+
+update employee_payroll set dept_id = 2 where id = 3
+
+update employee_payroll set dept_id = 2 where id = 4
+
+update employee_payroll set dept_id = 1 where id = 5
+
+update employee_payroll set dept_id = 1 where id = 6
+
+update employee_payroll set dept_id = 5 where id = 7
+
+update employee_payroll set dept_id = 3 where id = 8
+
+update employee_payroll set dept_id = 3 where id = 9
+
+update employee_payroll set dept_id = 2 where id = 10
+
+SELECT * FROM department
+
+SELECT * FROM employee_payroll
+
+
+
+
+													-------------------
+
+CREATE TABLE address
+(
+	city_id int PRIMARY KEY IDENTITY(1,1),
+	city_name varchar(30),
+	emp_id int FOREIGN KEY REFERENCES employee_payroll(id)
+);
+
+INSERT into address values ('Pune',1)
+INSERT into address values ('Nashik',3)
+INSERT into address values ('Mumbai',2)
+INSERT into address values ('Aurangabad',7)
+
+ALTER TABLE employee_payroll DROP column address
+
+ALTER TABLE employee_payroll ADD city_id int FOREIGN KEY REFERENCES address(city_id)
+
+update employee_payroll set city_id = 1 where id = 1
+update employee_payroll set city_id = 3 where id = 2
+update employee_payroll set city_id = 2 where id = 3
+update employee_payroll set city_id = 3 where id = 4
+update employee_payroll set city_id = 2 where id = 5
+update employee_payroll set city_id = 1 where id = 6
+update employee_payroll set city_id = 4 where id = 7
+update employee_payroll set city_id = 4 where id = 8
+update employee_payroll set city_id = 3 where id = 9
+update employee_payroll set city_id = 2 where id = 10
+
+
+--------------------------------------UC12- checked!! all UCs are working fine---------------------------------------------
+
+SELECT * FROM employee_payroll
+
+SELECT salary FROM employee_payroll where name = 'Mayur'
+
+SELECT salary FROM employee_payroll where startDate between CAST('2018-05-25' AS DATE) AND GETDATE()
+
+SELECT AVG(salary) From employee_payroll where gender = 'M'
+
+SELECT SUM(salary) From employee_payroll 
+
+SELECT MIN(salary) From employee_payroll where gender = 'M'
+
+SELECT MAX(salary) From employee_payroll where gender = 'M'
+
+SELECT COUNT(*) From employee_payroll where gender = 'M'
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
