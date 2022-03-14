@@ -46,7 +46,11 @@ SELECT salary FROM employee_payroll where name = 'Mayur'
 
 SELECT salary FROM employee_payroll where startDate between CAST('2018-05-25' AS DATE) AND GETDATE()
 
+SELECT * FROM employee_payroll where startDate between CAST('2018-05-25' AS DATE) AND GETDATE()
+
 SELECT salary FROM employee_payroll where startDate between CAST('2018-05-25' AS DATE) AND CAST('2020-07-17' AS DATE)
+
+SELECT * FROM employee_payroll where startDate between CAST('2018-05-25' AS DATE) AND CAST('2020-07-17' AS DATE)
 
 SELECT salary FROM employee_payroll where startDate between CAST('2021-08-01' AS DATE) AND GETDATE()
 
@@ -96,6 +100,8 @@ SELECT COUNT(*) From employee_payroll where gender = 'M'
 
 SELECT COUNT(salary) From employee_payroll where gender = 'F'
 
+SELECT SUM(salary) FROM employee_payroll where gender = 'M' Group by gender
+
 
 --------------UC8-Ability to extend employee_payroll data to store employee information like employee phone, address and department-----------
 
@@ -125,6 +131,20 @@ UPDATE employee_payroll set phone = '9865478565', address = 'Pune', department =
 
 ALTER TABLE employee_payroll add basic_pay decimal, deduction decimal, taxable_pay decimal, income_tax decimal, net_pay decimal 
 
+UPDATE employee_payroll set basic_pay =30400, deduction=1000,taxable_pay=5000,income_tax=600,net_pay=41000 where id = 1
+UPDATE employee_payroll set basic_pay =29000, deduction=1000,taxable_pay=1000,income_tax=600,net_pay=40000 where id = 2
+UPDATE employee_payroll set basic_pay =13000, deduction=1000,taxable_pay=2000,income_tax=600,net_pay=13500 where id = 3
+UPDATE employee_payroll set basic_pay =23000, deduction=2000,taxable_pay=1000,income_tax=600,net_pay=22500 where id = 4
+UPDATE employee_payroll set basic_pay =46000, deduction=1000,taxable_pay=2000,income_tax=600,net_pay=47000 where id = 5
+UPDATE employee_payroll set basic_pay =55000, deduction=1000,taxable_pay=2000,income_tax=600,net_pay=55000 where id = 6
+UPDATE employee_payroll set basic_pay =44000, deduction=2000,taxable_pay=1000,income_tax=600,net_pay=47000 where id = 7
+UPDATE employee_payroll set basic_pay =15000, deduction=1000,taxable_pay=2000,income_tax=600,net_pay=17000 where id = 8
+UPDATE employee_payroll set basic_pay =8000, deduction=1000,taxable_pay=2000,income_tax=600,net_pay=11000 where id = 9
+UPDATE employee_payroll set basic_pay =41000, deduction=2000,taxable_pay=3000,income_tax=600,net_pay=40000 where id = 10
+
+SELECT * from employee_payroll
+
+
 -------------------UC10-Ability to make Hitesh as part of Sales and Marketing Department------------------
 
 SELECT * from employee_payroll where name = 'Hitesh'
@@ -135,77 +155,50 @@ CREATE TABLE department
 (
 	dept_id int PRIMARY KEY IDENTITY(1,1),
 	dept_name varchar(30),
-	emp_id int FOREIGN KEY REFERENCES employee_payroll(id)
 );
 
+SELECT * from department
 
-INSERT into department values ('sales',1)
-INSERT into department values ('HR',3)
-INSERT into department values ('Marketing',2)
-INSERT into department values ('Other',7)
+INSERT into department values ('sales')
+INSERT into department values ('HR')
+INSERT into department values ('Marketing')
+INSERT into department values ('Other')
 
 
 ALTER TABLE employee_payroll DROP column department
 
-ALTER TABLE employee_payroll DROP column dept_name 
 
-ALTER TABLE employee_payroll ADD dept_id int FOREIGN KEY REFERENCES department(dept_id)
-
-update employee_payroll set dept_id = 1 where id = 1
-
-update employee_payroll set dept_id = 3 where id = 2
-
-update employee_payroll set dept_id = 2 where id = 3
-
-update employee_payroll set dept_id = 2 where id = 4
-
-update employee_payroll set dept_id = 1 where id = 5
-
-update employee_payroll set dept_id = 1 where id = 6
-
-update employee_payroll set dept_id = 5 where id = 7
-
-update employee_payroll set dept_id = 3 where id = 8
-
-update employee_payroll set dept_id = 3 where id = 9
-
-update employee_payroll set dept_id = 2 where id = 10
-
-SELECT * FROM department
-
-SELECT * FROM employee_payroll
-
-
-
-
-													-------------------
-
-CREATE TABLE address
+CREATE TABLE employee_payroll_service
 (
-	city_id int PRIMARY KEY IDENTITY(1,1),
-	city_name varchar(30),
-	emp_id int FOREIGN KEY REFERENCES employee_payroll(id)
+	service_id int PRIMARY KEY IDENTITY(1,1),
+	id int FOREIGN KEY REFERENCES employee_payroll(id),
+	dept_id int FOREIGN KEY REFERENCES department(dept_id)
 );
 
-INSERT into address values ('Pune',1)
-INSERT into address values ('Nashik',3)
-INSERT into address values ('Mumbai',2)
-INSERT into address values ('Aurangabad',7)
+SELECT * from employee_payroll
+SELECT * from department
+SELECT * from employee_payroll_service
 
-ALTER TABLE employee_payroll DROP column address
+INSERT into employee_payroll_service values (1,2)
+INSERT into employee_payroll_service values (2,3)
+INSERT into employee_payroll_service values (3,1)
+INSERT into employee_payroll_service values (4,4)
+INSERT into employee_payroll_service values (5,2)
+INSERT into employee_payroll_service values (6,2)
+INSERT into employee_payroll_service values (7,4)
+INSERT into employee_payroll_service values (8,3)
+INSERT into employee_payroll_service values (9,3)
+INSERT into employee_payroll_service values (10,1)
 
-ALTER TABLE employee_payroll ADD city_id int FOREIGN KEY REFERENCES address(city_id)
 
-update employee_payroll set city_id = 1 where id = 1
-update employee_payroll set city_id = 3 where id = 2
-update employee_payroll set city_id = 2 where id = 3
-update employee_payroll set city_id = 3 where id = 4
-update employee_payroll set city_id = 2 where id = 5
-update employee_payroll set city_id = 1 where id = 6
-update employee_payroll set city_id = 4 where id = 7
-update employee_payroll set city_id = 4 where id = 8
-update employee_payroll set city_id = 3 where id = 9
-update employee_payroll set city_id = 2 where id = 10
+SELECT employee_payroll.name, employee_payroll.salary,employee_payroll_service.dept_id FROM employee_payroll INNER JOIN employee_payroll_service on employee_payroll_service.id = employee_payroll.id
+
+SELECT * FROM employee_payroll INNER JOIN employee_payroll_service on employee_payroll_service.id = employee_payroll.id
+
+SELECT * FROM department INNER JOIN employee_payroll_service on employee_payroll_service.dept_id = department.dept_id
+
+SELECT * FROM department LEFT JOIN employee_payroll_service on employee_payroll_service.dept_id = department.dept_id
+
 
 
 --------------------------------------UC12- checked!! all UCs are working fine---------------------------------------------
@@ -228,10 +221,3 @@ SELECT COUNT(*) From employee_payroll where gender = 'M'
 
 
 ------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
